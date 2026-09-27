@@ -3,27 +3,26 @@ using UnityEngine.InputSystem;
 
 public class PlayerCamera : MonoBehaviour
 {
-    public float sensX;
-    public float sensY;
     public InputActionReference cameraAction;
 
+    [Header("Rotation Settings")]
     public Transform orientation;
-
     public float xRotation;
     public float yRotation;
 
-    public float sensitivityStep = 10f;
-    public float minSensitivity = 10f;
-    public float maxSensitivity = 500f;
-
+    [Header("Camera Settings")]
     public Camera MainCam;
     public Transform MainTransform;
     public bool CamOn;
+
+    private SettingsManager settingsManager;
+    private bool cameraLocked;
+
     void Start()
     {
+        settingsManager = Object.FindAnyObjectByType<SettingsManager>();
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
-
     }
 
     void OnEnable()
@@ -38,10 +37,13 @@ public class PlayerCamera : MonoBehaviour
 
     void LateUpdate()
     {
+        if (cameraLocked)
+            return;
+
         Vector2 mouseInput = cameraAction.action.ReadValue<Vector2>();
 
-        float mouseX = mouseInput.x * Time.deltaTime * sensX;
-        float mouseY = mouseInput.y * Time.deltaTime * sensY;
+        float mouseX = mouseInput.x * Time.deltaTime * settingsManager.MouseSensitivity;
+        float mouseY = mouseInput.y * Time.deltaTime * settingsManager.MouseSensitivity;
 
         yRotation += mouseX;
         xRotation -= mouseY;
@@ -65,4 +67,11 @@ public class PlayerCamera : MonoBehaviour
             }
         }
     }
+
+    // Referenced in MenuNavigation.cs
+    public void SetCameraLocked(bool locked)
+    {
+        cameraLocked = locked;
+    }
+
 }

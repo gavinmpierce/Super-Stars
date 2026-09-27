@@ -41,6 +41,7 @@ public class PlayerMovement : MonoBehaviour
     [Header("Other")]
     Rigidbody rb;
 
+    private bool movementLocked;
     void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -65,6 +66,8 @@ public class PlayerMovement : MonoBehaviour
     {
         grounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f + 0.2f, Ground);
 
+        if (movementLocked) return;
+
         MyInput();
         HandleFOV();
 
@@ -75,6 +78,7 @@ public class PlayerMovement : MonoBehaviour
     }
     private void FixedUpdate()
     {
+        if (movementLocked) return;
         SpeedControl();
         MovePlayer();
     }
@@ -154,5 +158,16 @@ public class PlayerMovement : MonoBehaviour
             targetFOV,
             Time.deltaTime * fovSpeed
         );
+    }
+
+    public void SetMovementLocked(bool locked)
+    {
+        movementLocked = locked;
+
+        if (locked)
+        {
+            horizontalInput = 0f;
+            verticalInput = 0f;
+        }
     }
 }
