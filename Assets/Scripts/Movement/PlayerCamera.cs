@@ -1,7 +1,9 @@
+using System.Globalization;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Unity.Netcode;
 
-public class PlayerCamera : MonoBehaviour
+public class PlayerCamera : NetworkBehaviour
 {
     public InputActionReference cameraAction;
 
@@ -23,6 +25,11 @@ public class PlayerCamera : MonoBehaviour
         settingsManager = Object.FindAnyObjectByType<SettingsManager>();
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+    }
+
+    public override void OnNetworkSpawn()
+    {
+        enabled = IsOwner; // only your own copy reads input
     }
 
     void OnEnable()

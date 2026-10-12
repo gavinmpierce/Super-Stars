@@ -1,7 +1,8 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Unity.Netcode;
 
-public class PlayerMovement : MonoBehaviour
+public class PlayerMovement : NetworkBehaviour
 {
     [Header("Camera")]
     public Camera playerCamera;
@@ -46,6 +47,11 @@ public class PlayerMovement : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
+    }
+
+    public override void OnNetworkSpawn()
+    {
+        enabled = IsOwner; // only your own copy reads input
     }
 
     void OnEnable()
