@@ -51,7 +51,9 @@ public class PlayerMovement : NetworkBehaviour
 
     public override void OnNetworkSpawn()
     {
-        enabled = IsOwner; // only your own copy reads input
+        rb = GetComponent<Rigidbody>();
+        enabled = IsOwner;
+        rb.isKinematic = !IsOwner;
     }
 
     void OnEnable()
@@ -63,6 +65,7 @@ public class PlayerMovement : NetworkBehaviour
 
     void OnDisable()
     {
+        if (!IsOwner) return;
         moveAction.action.Disable();
         jumpAction.action.Disable();
         sprintAction.action.Disable();

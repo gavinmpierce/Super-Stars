@@ -29,7 +29,11 @@ public class PlayerCamera : NetworkBehaviour
 
     public override void OnNetworkSpawn()
     {
-        enabled = IsOwner; // only your own copy reads input
+        enabled = IsOwner;
+
+        MainCam.enabled = IsOwner;
+        var listener = MainCam.GetComponent<AudioListener>();
+        if (listener) listener.enabled = IsOwner;
     }
 
     void OnEnable()
@@ -39,6 +43,7 @@ public class PlayerCamera : NetworkBehaviour
 
     void OnDisable()
     {
+        if (!IsOwner) return;
         cameraAction.action.Disable();
     }
 
