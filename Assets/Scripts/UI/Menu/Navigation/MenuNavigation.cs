@@ -78,19 +78,13 @@ public class MenuNavigation : MonoBehaviour
     { 
         MainButtons.SetActive(true);
         SettingsUI.SetActive(false);
+        ConfirmCloseGameUI.SetActive(false);
     }
 
     public void OpenConfirmCloseGame()   
     { 
         MainButtons.SetActive(false);
         ConfirmCloseGameUI.SetActive(true);
-    }
-
-    public void BackToMainMenuFromConfirmCloseGame() 
-    { 
-        MainButtons.SetActive(true);
-        SettingsUI.SetActive(false);
-        ConfirmCloseGameUI.SetActive(false);
     }
 
     public void CloseGame() 

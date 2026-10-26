@@ -4,11 +4,11 @@ using Unity.Netcode;
 
 public class PlayerMovement : NetworkBehaviour
 {
-    [Header("Camera")]
-    public Camera playerCamera;
-    public float sprintFOV = 75f;
-    public float normalFOV = 60f;
-    public float fovSpeed = 8f;
+    //[Header("Camera")]
+    //public Camera playerCamera;
+    //public float sprintFOV = 75f;
+    //public float normalFOV = 60f;
+    //public float fovSpeed = 8f;
 
     [Header("Movement")]
     public float moveSpeed;
@@ -78,7 +78,7 @@ public class PlayerMovement : NetworkBehaviour
         if (movementLocked) return;
 
         MyInput();
-        HandleFOV();
+        //HandleFOV();
 
         if (grounded)
             rb.linearDamping = groundDrag;
@@ -158,16 +158,16 @@ public class PlayerMovement : NetworkBehaviour
         }
     }
 
-    private void HandleFOV()
-    {
-        float targetFOV = isSprinting ? sprintFOV : normalFOV;
+    //private void HandleFOV()
+    //{
+    //    float targetFOV = isSprinting ? sprintFOV : normalFOV;
 
-        playerCamera.fieldOfView = Mathf.Lerp(
-            playerCamera.fieldOfView,
-            targetFOV,
-            Time.deltaTime * fovSpeed
-        );
-    }
+    //    playerCamera.fieldOfView = Mathf.Lerp(
+    //        playerCamera.fieldOfView,
+    //        targetFOV,
+    //        Time.deltaTime * fovSpeed
+    //    );
+    //}
 
     public void SetMovementLocked(bool locked)
     {

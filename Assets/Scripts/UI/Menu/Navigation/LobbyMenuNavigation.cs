@@ -47,6 +47,12 @@ public class LobbyMenuNavigation : MonoBehaviour
         ConfirmCloseGameUI.SetActive(true);
     }
 
+    public void CloseSettings()
+    {
+        SettingsUI.SetActive(false);
+        InitialChoices.SetActive(true);
+    }
+
     public void QuitGame()
     {
         Application.Quit();

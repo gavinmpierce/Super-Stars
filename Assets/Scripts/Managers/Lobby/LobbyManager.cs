@@ -26,6 +26,8 @@ public class LobbyManager : MonoBehaviour
     private const int HeartbeatSeconds = 15;
     private const string RelayCodeKey = "RelayJoinCode";
     private CancellationTokenSource heartbeatCts;
+    [Header("Testing")]
+    [SerializeField] private bool useUniqueProfileForTesting = true; // turn OFF for release
 
     private async void Awake()
     {
@@ -36,12 +38,28 @@ public class LobbyManager : MonoBehaviour
         try
         {
             if (UnityServices.State == ServicesInitializationState.Uninitialized)
-                await UnityServices.InitializeAsync();
+            {
+                var initOptions = new InitializationOptions();
+
+                if (useUniqueProfileForTesting)
+                {
+                    int pid = System.Diagnostics.Process.GetCurrentProcess().Id;
+                    initOptions.SetProfile($"test_{pid}");
+                }
+
+                await UnityServices.InitializeAsync(initOptions);
+            }
+
             if (!AuthenticationService.Instance.IsSignedIn)
                 await AuthenticationService.Instance.SignInAnonymouslyAsync();
+
+            Debug.Log($"Signed in as {AuthenticationService.Instance.PlayerId}");
             IsReady = true;
         }
-        catch (Exception e) { Debug.LogError($"Unity Services init failed: {e}"); }
+        catch (Exception e)
+        {
+            Debug.LogError($"Unity Services init failed: {e}");
+        }
     }
 
     public async Task<bool> CreateLobby(string lobbyName = "Game Lobby")
