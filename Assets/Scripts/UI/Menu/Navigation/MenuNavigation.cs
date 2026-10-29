@@ -20,6 +20,10 @@ public class MenuNavigation : MonoBehaviour
     {
         playerCamera = Object.FindAnyObjectByType<PlayerCamera>();
         playerMovement = Object.FindAnyObjectByType<PlayerMovement>();
+        MenuParent.SetActive(false);
+        MainButtons.SetActive(false);
+        SettingsUI.SetActive(false);
+        ConfirmCloseGameUI.SetActive(false);
     }
     private void OnEnable()
     {
